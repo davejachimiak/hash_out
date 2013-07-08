@@ -2,9 +2,9 @@ module PublicHash
   require 'set'
 
   def public_hash
-    set_hash
+    set_public_hash
     delete_exclusions
-    @hash
+    @public_hash
   end
 
   protected
@@ -16,8 +16,8 @@ module PublicHash
 
   private
 
-  def set_hash
-    @hash = Hash[public_methods_and_values]
+  def set_public_hash
+    @public_hash = Hash[public_methods_and_values]
   end
 
   def public_methods_and_values
@@ -33,7 +33,7 @@ module PublicHash
   end
 
   def delete_exclusions
-    exclusions.each { |exclusion| @hash.delete exclusion }
+    exclusions.each { |exclusion| @public_hash.delete exclusion }
   end
 
   def exclusions
