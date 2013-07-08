@@ -1,16 +1,21 @@
 module PublicHash
   def public_hash
-    return @public_hash if @public_hash
-    @exclusions ||= []
-    @public_hash  = delete_exclusions Hash[*alternating_method_names_and_values]
+    @public_hash || determine_public_hash
   end
 
   private
 
-  def alternating_method_names_and_values
-    public_method_names.map do |method_name|
-      [method_name, send(method_name)]
-    end.flatten
+  def determine_public_hash
+    @exclusions  = []
+    @public_hash = delete_exclusions Hash[public_methods_and_values]
+  end
+
+  def public_methods_and_values
+    public_method_names.map { |method_name| name_value_pair method_name  }
+  end
+
+  def name_value_pair method_name
+    [method_name, send(method_name)]
   end
 
   def public_method_names
