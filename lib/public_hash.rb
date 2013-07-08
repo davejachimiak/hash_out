@@ -1,67 +1,101 @@
 module PublicHash
   def public_hash
-    Hash[*alternating_method_names_and_values]
+    return @public_hash if @public_hash
+    @exclusions ||= []
+    @public_hash  = delete_exclusions Hash[*alternating_method_names_and_values]
   end
 
   private
 
   def alternating_method_names_and_values
-    method_names.map do |method_name|
+    public_method_names.map do |method_name|
       [method_name, send(method_name)]
     end.flatten
   end
 
-  def method_names
+  def public_method_names
     public_methods false
+  end
+
+  def delete_exclusions hash
+    @exclusions.each { |exclusion| hash.delete exclusion }
+    hash
+  end
+
+  def exclude_from_public_hash
+    excluded_method = caller_method_sym caller.first
+    @exclusions.push excluded_method
+  end
+
+  def caller_method_sym caller_string
+    caller_string.match(/`(.*)'/)[1].to_sym
   end
 end
 
 require 'minitest/autorun'
 require 'minitest/spec/expect'
 
-describe 'integration' do
-  describe '#public_hash' do
-    class Baller
-      include PublicHash
+describe 'PublicHash#public_hash' do
+  class Baller
+    include PublicHash
 
-      def mood
-        :ballin
-      end
-
-      def height
-        :tall
-      end
+    def mood
+      :ballin
     end
 
-    it 'returns a hash of name-values' do
-      baller      = Baller.new
-      public_hash = {
-        mood:   baller.mood,
-        height: baller.height
-      }
+    def height
+      :tall
+    end
+  end
 
-      expect(baller.public_hash).to_equal public_hash
+  it 'returns a hash of name-values' do
+    baller      = Baller.new
+    public_hash = {
+      mood:   baller.mood,
+      height: baller.height
+    }
+
+    expect(baller.public_hash).to_equal public_hash
+  end
+
+  class ShotCaller
+    include PublicHash
+
+    def front
+      :chillin
     end
 
-    class ShotCaller
-      include PublicHash
+    private
 
-      def front
-        :chillin
-      end
+    def real_mood
+      :nervous
+    end
+  end
 
-      private
+  it 'ignores private methods' do
+    shot_caller = ShotCaller.new
+    public_hash = { front: shot_caller.front }
 
-      def real_mood
-        :nervous
-      end
+    expect(shot_caller.public_hash).to_equal public_hash
+  end
+
+  class Brawler
+    include PublicHash
+
+    def fighting?
+      true
     end
 
-    it 'ignores private methods' do
-      shot_caller = ShotCaller.new
-      public_hash = { front: shot_caller.front }
-
-      expect(shot_caller.public_hash).to_equal public_hash
+    def pancakes
+      exclude_from_public_hash
+      'sure'
     end
+  end
+
+  it 'ignores public methods that declare exclusion from public hash' do
+    brawler      = Brawler.new
+    public_hash = { fighting?: brawler.fighting? }
+
+    expect(brawler.public_hash).to_equal public_hash
   end
 end
