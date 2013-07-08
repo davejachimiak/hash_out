@@ -2,7 +2,6 @@ module PublicHash
   require 'set'
 
   def public_hash
-    initialize_exclusions
     set_hash
     delete_exclusions
     @hash
@@ -10,16 +9,8 @@ module PublicHash
 
   private
 
-  def initialize_exclusions
-    @exclusions ||= Set.new
-  end
-
   def set_hash
     @hash = Hash[public_methods_and_values]
-  end
-
-  def delete_exclusions
-    @exclusions.each { |exclusion| @hash.delete exclusion }
   end
 
   def public_methods_and_values
@@ -34,9 +25,17 @@ module PublicHash
     [method_name, send(method_name)]
   end
 
+  def delete_exclusions
+    exclusions.each { |exclusion| @hash.delete exclusion }
+  end
+
+  def exclusions
+    @exclusions ||= Set.new
+  end
+
   def exclude_from_public_hash
     excluded_method = caller_method_sym caller.first
-    @exclusions.add excluded_method
+    exclusions.add excluded_method
   end
 
   def caller_method_sym caller_string
