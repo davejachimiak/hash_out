@@ -7,6 +7,13 @@ module PublicHash
     @hash
   end
 
+  protected
+
+  def exclude_from_public_hash
+    excluded_method = caller_method_sym caller.first
+    exclusions.add excluded_method
+  end
+
   private
 
   def set_hash
@@ -31,11 +38,6 @@ module PublicHash
 
   def exclusions
     @exclusions ||= Set.new
-  end
-
-  def exclude_from_public_hash
-    excluded_method = caller_method_sym caller.first
-    exclusions.add excluded_method
   end
 
   def caller_method_sym caller_string
