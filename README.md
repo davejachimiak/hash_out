@@ -3,7 +3,9 @@ Adds a method that returns a hash of public method names and values to your clas
 
 ## Install
 Add to your Gemfile:
-`gem 'hash_out', '~> 0.1'
+```ruby
+gem 'hash_out', '~> 0.1'
+```
 
 Or install it from the command line:
 `$ gem install hash_out`
@@ -14,6 +16,14 @@ Or install it from the command line:
 3. If you wish, exclude methods from being included with `exclude_from_hash_out`.
 4. Call `#hash_out` on the instance to return a hash of public method names and their values.
 
-`#hash_out` does not return private methods.
+`#hash_out` automatically excludes methods that require arguments and private methods.
+
+```ruby
+require 'hash_out'
+
+class Task
+  include HashOut
+end
+```
 
 ## License

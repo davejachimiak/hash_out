@@ -17,15 +17,17 @@ module HashOut
   private
 
   def set_hash_out
-    @hash_out = Hash[public_methods_and_values]
+    @hash_out = Hash[interesting_methods_and_values]
   end
 
-  def public_methods_and_values
-    public_method_names.map { |method_name| name_value_pair method_name }
+  def interesting_methods_and_values
+    methods_requiring_no_arguments.map do |method_name|
+      name_value_pair method_name
+    end
   end
 
-  def public_method_names
-    public_methods false
+  def methods_requiring_no_arguments
+    public_methods(false).reject { |m| method(m).arity < -1 }
   end
 
   def name_value_pair method_name
