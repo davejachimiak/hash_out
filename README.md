@@ -1,4 +1,4 @@
-public_hash
+hash_out
 ===========
 
-Adds method that returns a hash of public method names and values
+Adds a method to your class' instance that returns a hash of public method names and values.

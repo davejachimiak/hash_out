@@ -1,10 +1,10 @@
-require_relative '../../lib/public_hash'
+require_relative '../../lib/hash_out'
 require 'minitest/autorun'
 require 'minitest/spec/expect'
 
-describe 'PublicHash#public_hash' do
+describe 'HashOut#hash_out' do
   class Baller
-    include PublicHash
+    include HashOut
 
     def mood
       :ballin
@@ -17,16 +17,16 @@ describe 'PublicHash#public_hash' do
 
   it 'returns a hash of name-values' do
     baller      = Baller.new
-    public_hash = {
+    hash_out = {
       mood:   baller.mood,
       height: baller.height
     }
 
-    expect(baller.public_hash).to_equal public_hash
+    expect(baller.hash_out).to_equal hash_out
   end
 
   class ShotCaller
-    include PublicHash
+    include HashOut
 
     def front
       :chillin
@@ -41,28 +41,28 @@ describe 'PublicHash#public_hash' do
 
   it 'ignores private methods' do
     shot_caller = ShotCaller.new
-    public_hash = { front: shot_caller.front }
+    hash_out = { front: shot_caller.front }
 
-    expect(shot_caller.public_hash).to_equal public_hash
+    expect(shot_caller.hash_out).to_equal hash_out
   end
 
   class Brawler
-    include PublicHash
+    include HashOut
 
     def fighting?
       true
     end
 
     def pancakes
-      exclude_from_public_hash
+      exclude_from_hash_out
       'sure'
     end
   end
 
   it 'ignores public methods that declare exclusion from public hash' do
     brawler      = Brawler.new
-    public_hash = { fighting?: brawler.fighting? }
+    hash_out = { fighting?: brawler.fighting? }
 
-    expect(brawler.public_hash).to_equal public_hash
+    expect(brawler.hash_out).to_equal hash_out
   end
 end
