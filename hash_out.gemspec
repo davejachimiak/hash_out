@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.email         = 'dave.jachimiak@gmail.com'
   s.homepage      = 'http://github.com/davejachimiak/hash_out'
   s.version       = HashOut::VERSION
+  s.license       = 'MIT'
   s.files         = `git ls-files`.split("\n").reject do |file_name|
     /\.gem$/.match file_name
   end
