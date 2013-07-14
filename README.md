@@ -21,9 +21,45 @@ Or install it from the command line:
 ```ruby
 require 'hash_out'
 
-class Task
+class Movie
   include HashOut
+
+  def title
+    'Fire Walk With Me'
+  end
+
+  def director
+    'David Lynch'
+  end
+
+  def release_year
+    1992
+  end
+
+  def budget
+    exclude_from_hash_out
+    USD.new 10000000
+  end
+
+  def available_instantly? catalog=TerribleStreamingService
+    catalog.available_instantly? self
+  end
+
+  def has_actor? actor
+    actors.include? actor
+  end
+
+  def terrible_example_method_that_wont_be_hashed_out yo, sup=nil
+    :ugh
+  end
+
+  private
+
+  def actors
+    ['Sheryl Lee', 'David Bowie', 'Ray Wise']
+  end
 end
+
 ```
 
 ## License
