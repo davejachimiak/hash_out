@@ -73,6 +73,12 @@ movie.hash_out
 4. Ensure the specs are green (`$ rake`)
 5. Open a pull request.
 
+## TODO
+* Prefix iVars with _ to avoid name collision.
+* Provide class method that offers custom delegator for `#hash_out`
+* Provide class method that offers alternative to `exclude_from_hash_out`
+* Provide class method that allows for inclusion of protected and private methods in resulting hash.
+
 ## License
 The MIT License (MIT)
 
