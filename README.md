@@ -75,6 +75,7 @@ movie.hash_out
 
 ## TODO
 * Prefix iVars with _ to avoid name collision.
+* Bug: make `#hash_out` work with SimpleDelegator
 * Provide class method that offers custom delegator for `#hash_out`
 * Provide class method that offers alternative to `exclude_from_hash_out`
 * Provide class method that allows for inclusion of protected and private methods in resulting hash.
