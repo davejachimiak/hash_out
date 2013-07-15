@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/davejachimiak/hash_out.png?branch=master)](https://travis-ci.org/davejachimiak/hash_out)
 
-Adds a method that converts an instance's public methods to a hash of their names an values.
+Include `HashOut` to your class and convert your object to a hash with the `#hash_out` method.
 
 ## Install
 Add to your Gemfile:
