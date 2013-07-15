@@ -7,8 +7,7 @@ Add to your Gemfile:
 gem 'hash_out', '~> 0.1'
 ```
 
-Or install it from the command line:
-`$ gem install hash_out`
+Or install it from the command line: `$ gem install hash_out`
 
 ## Usage
 1. Require it in your Gemfile.
@@ -29,16 +28,8 @@ class Movie
   end
 
   def director
-    'David Lynch'
-  end
-
-  def release_year
-    1992
-  end
-
-  def budget
     exclude_from_hash_out
-    USD.new 10000000
+    'David Lynch'
   end
 
   def available_instantly? catalog=TerribleStreamingService
@@ -60,9 +51,38 @@ class Movie
   end
 end
 
+movie = Movie.new
 movie.hash_out
-# => {:title=>"Fire Walk With Me", :director=>"David Lynch", :release_year=>1992, :available_instantly?=>true}
+# => {:title=>"Fire Walk With Me", :available_instantly?=>true}
 
 ```
 
+## Contribute
+1. Fork the repo.
+2. Create a branch.
+3. Add specs and code.
+4. Ensure the specs are green (`$ rake`)
+5. Open a pull request.
+
 ## License
+The MIT License (MIT)
+
+Copyright (c) 2013 Dave Jachimiak
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
