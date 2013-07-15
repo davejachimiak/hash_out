@@ -60,6 +60,9 @@ class Movie
   end
 end
 
+movie.hash_out
+# => {:title=>"Fire Walk With Me", :director=>"David Lynch", :release_year=>1992, :available_instantly?=>true}
+
 ```
 
 ## License
