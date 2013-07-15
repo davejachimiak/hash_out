@@ -1,8 +1,7 @@
 PATH
   remote: .
   specs:
-    hash_out (0.1.0)
-      rake
+    hash_out (0.1.1)
 
 GEM
   remote: https://rubygems.org/
@@ -18,3 +17,4 @@ PLATFORMS
 DEPENDENCIES
   hash_out!
   minitest-spec-expect (~> 0.1)
+  rake
