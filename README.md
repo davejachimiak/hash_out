@@ -46,8 +46,8 @@ class Movie
     actors.include? actor
   end
 
-  def chance_of_sequel? existing_sequels, strategy=FutureSequelStrategy.new
-    strategy(self, existing_sequels).chance > 0.5
+  def chance_of_sequel? existing_sequels, strategy=FutureSequelStrategy
+    strategy.new(self, existing_sequels).chance > 0.5
   end
 
   private
