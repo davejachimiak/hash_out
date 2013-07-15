@@ -1,5 +1,8 @@
 # hash_out
-Adds a method that returns a hash of public method names and values to your class' instances.
+
+[![Build Status](https://travis-ci.org/davejachimiak/hash_out.png?branch=master)](https://travis-ci.org/davejachimiak/hash_out)
+
+Adds a method that converts an instance's public methods to a hash of their names an values.
 
 ## Install
 Add to your Gemfile:
@@ -7,15 +10,18 @@ Add to your Gemfile:
 gem 'hash_out', '~> 0.1'
 ```
 
-Or install it from the command line: `$ gem install hash_out`
+Or install it from the command line:
+```sh
+$ gem install hash_out
+```
 
 ## Usage
-1. Require it in your Gemfile.
+1. `require 'hash_out'`.
 2. Include `HashOut` in your class.
-3. If you wish, exclude methods from being included with `exclude_from_hash_out`.
-4. Call `#hash_out` on the instance to return a hash of public method names and their values.
+3. If desired, exclude methods from `#hash_out` by adding `exclude_from_hash_out` to them.
+4. Call `#hash_out` on the instance to return a hash of method names and their values.
 
-`#hash_out` automatically excludes methods that require arguments and private methods.
+**`#hash_out` automatically excludes methods that require arguments and private methods.**
 
 ```ruby
 require 'hash_out'
