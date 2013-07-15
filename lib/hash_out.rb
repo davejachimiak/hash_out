@@ -4,11 +4,9 @@ module HashOut
   def hash_out
     caller_method = caller_method_sym caller.first
 
-    handle_recursion(caller_method) do
-      if @called == 1
-        set_hash_out
-        delete_exclusions
-      end
+    handle_recursion caller_method  do
+      set_hash_out
+      delete_exclusions
     end
 
     @hash_out
@@ -24,10 +22,15 @@ module HashOut
   private
 
   def handle_recursion hash_out_caller
+    exclusions.add hash_out_caller
+
     @called ||= 0
     @called  += 1
-    exclusions.add hash_out_caller
-    yield
+
+    if @called == 1
+      yield
+    end
+
     @called = 0
   end
 
