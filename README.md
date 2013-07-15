@@ -23,8 +23,8 @@ $ gem install hash_out
 
 ##### `#hash_out` automatically excludes from its returning hash the following:
 1. private methods
-2. methods that require arguments.
-3. instance methods the class that includes `HashOut` that wrap or otherwise call `#hash_out`.
+2. methods that require arguments
+3. instance methods in classes that include `HashOut` that wrap or otherwise call `#hash_out`
 
 ```ruby
 require 'hash_out'
