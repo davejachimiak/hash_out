@@ -83,6 +83,7 @@ describe 'HashOut#hash_out' do
 
     def clean materials
       clean_with materials
+      @cleaned = true
     end
 
     def blade edge=:sharp
@@ -96,7 +97,8 @@ describe 'HashOut#hash_out' do
       yield self
     end
 
-    def clean_with
+    def clean_with materials
+      #
     end
   end
 
@@ -105,5 +107,24 @@ describe 'HashOut#hash_out' do
     hash_out = { blade: grinder.blade }
 
     expect(grinder.hash_out).to_equal hash_out
+  end
+
+  class SoMeta
+    include HashOut
+
+    def an_method
+      :result
+    end
+
+    def attributes
+      hash_out
+    end
+  end
+
+  it "ignores internal public method that calls #hash_out" do
+    so_meta  = SoMeta.new
+    hash_out = { an_method: :result }
+
+    expect(so_meta.attributes).to_equal hash_out
   end
 end

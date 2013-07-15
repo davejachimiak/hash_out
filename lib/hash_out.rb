@@ -2,8 +2,15 @@ module HashOut
   require 'set'
 
   def hash_out
-    set_hash_out
-    delete_exclusions
+    caller_method = caller_method_sym caller.first
+
+    handle_recursion(caller_method) do
+      if @called == 1
+        set_hash_out
+        delete_exclusions
+      end
+    end
+
     @hash_out
   end
 
@@ -15,6 +22,14 @@ module HashOut
   end
 
   private
+
+  def handle_recursion hash_out_caller
+    @called ||= 0
+    @called  += 1
+    exclusions.add hash_out_caller
+    yield
+    @called = 0
+  end
 
   def set_hash_out
     @hash_out = Hash[interesting_methods_and_values]
