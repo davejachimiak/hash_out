@@ -21,7 +21,7 @@ $ gem install hash_out
 3. If desired, exclude methods from `#hash_out` by adding `exclude_from_hash_out` to them.
 4. Call `#hash_out` on the instance to return a hash of method names and their values.
 
-**`#hash_out` automatically excludes methods that require arguments and private methods.**
+**`#hash_out` automatically excludes private methods and methods that require arguments.**
 
 ```ruby
 require 'hash_out'
@@ -38,7 +38,7 @@ class Movie
     'David Lynch'
   end
 
-  def available_instantly? catalog=TerribleStreamingService
+  def available_instantly? catalog=TerribleStreamingService.new
     catalog.available_instantly? self
   end
 
@@ -46,8 +46,8 @@ class Movie
     actors.include? actor
   end
 
-  def terrible_example_method_that_wont_be_hashed_out yo, sup=nil
-    :ugh
+  def chance_of_sequel? existing_sequels, strategy=FutureSequelStrategy.new
+    strategy(self, existing_sequels).chance > 0.5
   end
 
   private
@@ -59,7 +59,7 @@ end
 
 movie = Movie.new
 movie.hash_out
-# => {:title=>"Fire Walk With Me", :available_instantly?=>true}
+# => {:title=>"Fire Walk With Me", :available_instantly?=>false}
 
 ```
 
