@@ -21,7 +21,10 @@ $ gem install hash_out
 3. If desired, exclude methods from `#hash_out` by adding `exclude_from_hash_out` to them.
 4. Call `#hash_out` on the instance to return a hash of method names and their values.
 
-**`#hash_out` automatically excludes private methods and methods that require arguments.**
+**`#hash_out` automatically excludes from its returning hash the following:
+1. private methods
+2. methods that require arguments.**
+3. instance methods the class that includes `HashOut` that wrap or otherwise call `#hash_out`.**
 
 ```ruby
 require 'hash_out'
