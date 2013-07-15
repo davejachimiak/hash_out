@@ -5,8 +5,8 @@ require 'hash_out/version'
 
 Gem::Specification.new do |s|
   s.name          = 'hash_out'
-  s.description   = 'Easily convert public methods to a hash.'
-  s.summary       = "hash_out adds a method to your class' instance and returns hash of public method names and values."
+  s.description   = 'Easily convert objects to hashes.'
+  s.summary       = "hash_out adds the #hash_out method to your class' instance. It returns a hash of public method names and values."
   s.authors       = ['Dave Jachimiak']
   s.email         = 'dave.jachimiak@gmail.com'
   s.homepage      = 'http://github.com/davejachimiak/hash_out'
