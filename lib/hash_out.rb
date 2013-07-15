@@ -27,7 +27,7 @@ module HashOut
   end
 
   def methods_requiring_no_arguments
-    public_methods(false).reject { |m| method(m).arity < -1 }
+    public_methods(false).select { |m| [-1, 0].include? method(m).arity }
   end
 
   def name_value_pair method_name

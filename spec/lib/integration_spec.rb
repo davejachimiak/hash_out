@@ -81,6 +81,10 @@ describe 'HashOut#hash_out' do
       end
     end
 
+    def clean materials
+      clean_with materials
+    end
+
     def blade edge=:sharp
       edge
     end
@@ -90,6 +94,9 @@ describe 'HashOut#hash_out' do
     def with_settings settings
       @settings = settings
       yield self
+    end
+
+    def clean_with
     end
   end
 
