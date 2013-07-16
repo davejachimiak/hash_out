@@ -68,7 +68,6 @@ describe 'HashOut#hash_out' do
 
   class Beans; end;
   class Grinder
-    require 'ostruct'
     include HashOut
 
     def initialize
@@ -76,8 +75,8 @@ describe 'HashOut#hash_out' do
     end
 
     def grind settings, beans=@beans
-      with_settings(settings) do
-        beans.krush
+      with_settings(settings) do |grinder|
+        beans.krush_with grinder
       end
     end
 
