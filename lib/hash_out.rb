@@ -39,7 +39,7 @@ module HashOut
       exclusions.add hash_out_caller
 
       block_recursion do
-        set_hash_out
+        set_hash
         delete_exclusions
       end
 
@@ -65,7 +65,7 @@ module HashOut
       @times_called = 0
     end
 
-    def set_hash_out
+    def set_hash
       @hash = Hash[interesting_methods_and_values]
     end
 
