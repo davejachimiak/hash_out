@@ -9,7 +9,7 @@ module HashOut
       delete_exclusions
     end
 
-    @hash_out
+    @_hash_out
   end
 
   protected
@@ -24,18 +24,18 @@ module HashOut
   def block_recursion hash_out_caller
     exclusions.add hash_out_caller
 
-    @times_called ||= 0
-    @times_called  += 1
+    @_times_called ||= 0
+    @_times_called  += 1
 
-    if @times_called == 1
+    if @_times_called == 1
       yield
     end
 
-    @times_called = 0
+    @_times_called = 0
   end
 
   def set_hash_out
-    @hash_out = Hash[interesting_methods_and_values]
+    @_hash_out = Hash[interesting_methods_and_values]
   end
 
   def interesting_methods_and_values
@@ -53,11 +53,11 @@ module HashOut
   end
 
   def delete_exclusions
-    exclusions.each { |exclusion| @hash_out.delete exclusion }
+    exclusions.each { |exclusion| @_hash_out.delete exclusion }
   end
 
   def exclusions
-    @exclusions ||= Set.new
+    @_exclusions ||= Set.new
   end
 
   def caller_method_sym caller_string
