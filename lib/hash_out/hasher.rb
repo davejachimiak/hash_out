@@ -23,11 +23,7 @@ module HashOut
       @times_called ||= 0
       @times_called  += 1
 
-      if @times_called == 1
-        yield
-      else
-        return
-      end
+      yield if @times_called == 1
 
       @times_called = 0
     end
