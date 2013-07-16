@@ -120,10 +120,25 @@ describe 'HashOut#hash_out' do
     end
   end
 
-  it "ignores internal public method that calls #hash_out" do
+  it 'ignores internal public method that calls #hash_out' do
     so_meta  = SoMeta.new
     hash_out = { an_method: :result }
 
     expect(so_meta.attributes).to_equal hash_out
+    expect(so_meta.hash_out).to_equal hash_out
+  end
+
+  class Ooze
+    include HashOut
+    attr_accessor :color
+  end
+
+  it 'accounts for attribute mutation between calls to #hash_out' do
+    ooze = Ooze.new
+    ooze.color = :green
+    expect(ooze.hash_out).to_equal({color: :green})
+
+    ooze.color = :purple
+    expect(ooze.hash_out).to_equal({color: :purple})
   end
 end

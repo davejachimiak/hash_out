@@ -3,10 +3,7 @@ require 'hash_out/hasher'
 module HashOut
   def hash_out
     hash_out_caller = _caller_method_sym caller.first
-    hash            = _hasher(hash_out_caller).object_to_hash
-
-    _uncache_hasher
-    hash
+    _hasher(hash_out_caller).object_to_hash
   end
 
   protected
@@ -24,10 +21,6 @@ module HashOut
 
   def _exclusions
     _hasher.exclusions
-  end
-
-  def _uncache_hasher
-    @_hasher = nil
   end
 
   def _hasher hash_out_caller=nil
