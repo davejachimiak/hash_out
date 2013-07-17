@@ -15,7 +15,7 @@ module HashOut
       @times_called > 1
     end
 
-    def delete_caller hash
+    def delete_caller_from hash
       hash.delete hash_out_caller if internal_call?
     end
   end

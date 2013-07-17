@@ -17,7 +17,7 @@ module HashOut
 
     def prepare_hashable_methods
       @hashable_methods = object.send :_methods_requiring_no_args
-      call_registry.delete_caller @hashable_methods
+      call_registry.delete_caller_from @hashable_methods
     end
 
     def set_hash
