@@ -31,4 +31,8 @@ module HashOut
   def _methods_requiring_no_args
     public_methods(false).select { |m| [-1, 0].include? method(m).arity }
   end
+
+  def _method_value_pair method
+    [method, send(method)]
+  end
 end

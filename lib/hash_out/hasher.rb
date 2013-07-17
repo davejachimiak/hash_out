@@ -25,15 +25,13 @@ module HashOut
     end
 
     def set_hash
-      @hash = Hash[hashable_methods_and_values]
+      @hash = Hash[hashable_method_value_pairs]
     end
 
-    def hashable_methods_and_values
-      @hashable_methods.map { |method_name| name_value_pair method_name }
-    end
-
-    def name_value_pair method_name
-      [method_name, object.send(method_name)]
+    def hashable_method_value_pairs
+      @hashable_methods.map do |method|
+        object.send :_method_value_pair, method
+      end
     end
 
     def delete_exclusions
