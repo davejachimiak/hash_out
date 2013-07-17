@@ -3,6 +3,7 @@ require 'set'
 module HashOut
   class Hasher < Struct.new :object, :hash_out_caller
     def object_to_hash
+      set_hashable_methods
       set_hash
       delete_exclusions
       @hash
@@ -15,19 +16,23 @@ module HashOut
     private
 
     def set_hash
-      @hash = Hash[interesting_methods_and_values]
+      @hash = Hash[hashable_methods_and_values]
     end
 
-    def interesting_methods_and_values
-      methods_requiring_no_arguments.map do |method_name|
-        name_value_pair method_name
+    def hashable_methods_and_values
+      @hashable_methods.map { |method_name| name_value_pair method_name }
+    end
+
+    def set_hashable_methods
+      @hashable_methods = object.public_methods(false).select do |method|
+        does_not_require_arg? method
       end
+
+      @hashable_methods.delete hash_out_caller
     end
 
-    def methods_requiring_no_arguments
-      object.public_methods(false).select do |m|
-        [-1, 0].include? object.method(m).arity
-      end.reject { |m| m == hash_out_caller }
+    def does_not_require_arg? method
+      [-1, 0].include? object.method(method).arity
     end
 
     def name_value_pair method_name
