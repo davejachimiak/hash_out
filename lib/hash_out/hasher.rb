@@ -17,8 +17,8 @@ module HashOut
     private
 
     def register_call
-      @called ||= 0
-      @called  += 1
+      @times_called ||= 0
+      @times_called  += 1
     end
 
     def set_hashable_methods
@@ -40,7 +40,7 @@ module HashOut
     end
 
     def on_recurse_return value
-      return yield unless @called > 1
+      return yield unless @times_called > 1
       value
     end
 
