@@ -4,7 +4,7 @@ module HashOut
   class Hasher < Struct.new :object, :hash_out_caller
     def object_to_hash
       register_call
-      set_hashable_methods
+      prepare_hashable_methods
       set_hash
       delete_exclusions
       @hash
@@ -21,7 +21,7 @@ module HashOut
       @times_called  += 1
     end
 
-    def set_hashable_methods
+    def prepare_hashable_methods
       @hashable_methods = object.public_methods(false).select do |method|
         does_not_require_arg? method
       end
@@ -34,14 +34,7 @@ module HashOut
     end
 
     def internal_call?
-      on_recurse_return true do
-        !object.send hash_out_caller if object.respond_to? hash_out_caller
-      end
-    end
-
-    def on_recurse_return value
-      return yield unless @times_called > 1
-      value
+      @times_called > 1
     end
 
     def set_hash
