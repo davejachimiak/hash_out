@@ -3,6 +3,7 @@ require 'set'
 module HashOut
   class Hasher < Struct.new :object, :hash_out_caller
     def object_to_hash
+      register_call
       set_hashable_methods
       set_hash
       delete_exclusions
@@ -15,16 +16,32 @@ module HashOut
 
     private
 
+    def register_call
+      @called ||= 0
+      @called  += 1
+    end
+
     def set_hashable_methods
       @hashable_methods = object.public_methods(false).select do |method|
         does_not_require_arg? method
       end
 
-      @hashable_methods.delete hash_out_caller
+      @hashable_methods.delete hash_out_caller if internal_call?
     end
 
     def does_not_require_arg? method
       [-1, 0].include? object.method(method).arity
+    end
+
+    def internal_call?
+      on_recurse_return true do
+        !object.send hash_out_caller if object.respond_to? hash_out_caller
+      end
+    end
+
+    def on_recurse_return value
+      return yield unless @called > 1
+      value
     end
 
     def set_hash

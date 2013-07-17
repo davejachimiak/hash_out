@@ -1,24 +1,22 @@
 require_relative '../spec_helper'
 
 describe 'ambiguous caller' do
-  class One
+  class What
     include HashOut
 
-    def melted_attributes
-      true
+    def huh
+      :yep
     end
   end
 
-  class Two
-    def melted_attributes
-      One.new.hash_out
+  class Yep
+    def self.huh
+      What.new.hash_out
     end
   end
 
   it "keeps the key of the name of another object's caller" do
-    two      = Two.new
-    hash_out = { melted_attributes: true }
-
-    expect(two.melted_attributes).to_equal hash_out
+    hash_out = { huh: :yep }
+    expect(Yep.huh).to_equal hash_out
   end
 end
