@@ -11,7 +11,7 @@ module HashOut
   protected
 
   def exclude_from_hash_out
-    _exclusions.add last_call
+    _hasher.exclude last_call
   end
 
   private
@@ -26,10 +26,6 @@ module HashOut
 
   def _hasher
     @_hasher ||= Hasher.new self, _call_registry
-  end
-
-  def _exclusions
-    _hasher.exclusions
   end
 
   def _methods_requiring_no_args

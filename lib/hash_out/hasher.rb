@@ -13,6 +13,10 @@ module HashOut
       @exclusions ||= Set.new
     end
 
+    def exclude method
+      exclusions.add method
+    end
+
     private
 
     def prepare_hashable_methods
