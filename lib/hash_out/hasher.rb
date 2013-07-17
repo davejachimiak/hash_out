@@ -3,13 +3,8 @@ require 'set'
 module HashOut
   class Hasher < Struct.new :object, :hash_out_caller
     def object_to_hash
-      exclusions.add hash_out_caller
-
-      block_recursion do
-        set_hash
-        delete_exclusions
-      end
-
+      set_hash
+      delete_exclusions
       @hash
     end
 
@@ -18,15 +13,6 @@ module HashOut
     end
 
     private
-
-    def block_recursion
-      @times_called ||= 0
-      @times_called  += 1
-
-      yield if @times_called == 1
-
-      @times_called = 0
-    end
 
     def set_hash
       @hash = Hash[interesting_methods_and_values]
@@ -39,7 +25,9 @@ module HashOut
     end
 
     def methods_requiring_no_arguments
-      object.public_methods(false).select { |m| [-1, 0].include? object.method(m).arity }
+      object.public_methods(false).select do |m|
+        [-1, 0].include? object.method(m).arity
+      end.reject { |m| m == hash_out_caller }
     end
 
     def name_value_pair method_name

@@ -117,10 +117,12 @@ describe 'HashOut#hash_out' do
 
     def attributes
       hash_out
+      hash_out
+      hash_out
     end
   end
 
-  it 'ignores internal public method that calls #hash_out' do
+  it 'ignores internal public method that calls #hash_out any number of times' do
     so_meta  = SoMeta.new
     hash_out = { an_method: :result }
 
