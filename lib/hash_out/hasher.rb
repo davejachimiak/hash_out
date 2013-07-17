@@ -17,11 +17,7 @@ module HashOut
 
     def prepare_hashable_methods
       @hashable_methods = object.send :_methods_requiring_no_args
-      @hashable_methods.delete call_registry.hash_out_caller if internal_call?
-    end
-
-    def internal_call?
-      call_registry.times_called > 1
+      call_registry.delete_caller @hashable_methods
     end
 
     def set_hash
