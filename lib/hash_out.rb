@@ -1,6 +1,7 @@
 require 'last_call'
-require 'hash_out/call_registry'
 require 'hash_out/hasher'
+require 'hash_out/call_registry'
+require 'hash_out/object_wrapper'
 
 module HashOut
   def hash_out
@@ -19,7 +20,8 @@ module HashOut
   end
 
   def _hasher
-    @_hasher ||= Hasher.new self, _call_registry
+    object_wrapper ||= ObjectWrapper.new self
+    @_hasher ||= Hasher.new object_wrapper, _call_registry
   end
 
   def _methods_requiring_no_args
