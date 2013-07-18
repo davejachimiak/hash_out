@@ -37,7 +37,7 @@ Movie.new.hash_out
 # => {:title=>"Fire Walk With Me", :director=>'David Lynch'}
 ```
 
-To exclude public methods from `#hash_out`, put `exclude_from_hash_out` at the top of it.
+To exclude public methods from `#hash_out`, put `exclude_from_hash_out` at the top of them.
 
 ```ruby
 require 'hash_out'
