@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe 'attribute mutation' do
+describe 'attribute mutation between #hash_out calls' do
   class Ooze
     include HashOut
     attr_accessor :color
