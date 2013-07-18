@@ -1,11 +1,17 @@
+require 'hash_out/excludable'
+
 module HashOut
   class ObjectWrapper
     def initialize object
       @object = object
     end
 
-    def duplication
-      @duplication ||= @object.dup
+    def excludable
+      @excludable ||= begin
+                        dup_obj = @object.dup
+                        dup_obj.extend Excludable
+                        dup_obj
+                      end
     end
 
     def public_methods_requiring_no_args

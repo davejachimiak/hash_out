@@ -20,16 +20,11 @@ module HashOut
   end
 
   def _hasher
-    object_wrapper ||= ObjectWrapper.new self
-    @_hasher ||= Hasher.new object_wrapper, _call_registry
+    @_hasher ||= Hasher.new _wrapped_self, _call_registry
   end
 
-  def _methods_requiring_no_args
-    public_methods(false).select { |m| [-1, 0].include? method(m).arity }
-  end
-
-  def _method_value_pair method
-    [method, send(method)]
+  def _wrapped_self
+    @_wrapped_self ||= ObjectWrapper.new self
   end
 
   def exclude_from_hash_out; end;

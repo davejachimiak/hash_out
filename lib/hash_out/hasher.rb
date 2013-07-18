@@ -5,7 +5,7 @@ module HashOut
   class Hasher < Struct.new :object, :call_registry
     extend Forwardable
 
-    def_delegator :object, :duplication, :obj_dup
+    def_delegator :object, :excludable, :excludable_obj
 
     def object_to_hash
       prepare_hashable_methods
@@ -21,9 +21,8 @@ module HashOut
     end
 
     def delete_excluded_methods
-      obj_dup.extend Excludable
-      obj_dup.prepare_exclusions @hashable_methods
-      obj_dup.delete_exclusions @hashable_methods
+      excludable_obj.prepare_exclusions @hashable_methods
+      excludable_obj.delete_exclusions @hashable_methods
     end
 
     def hashable_method_value_pairs
