@@ -5,7 +5,6 @@ module HashOut
     def object_to_hash
       prepare_hashable_methods
       set_hash
-      delete_exclusions
       @hash
     end
 
@@ -22,6 +21,11 @@ module HashOut
     def prepare_hashable_methods
       @hashable_methods = object.send :_methods_requiring_no_args
       call_registry.delete_caller_from @hashable_methods
+      @hashable_methods.reject! do |method|
+        dup_obj = object.dup
+        dup_obj.send method
+        dup_obj.send :_excluded?, method
+      end
     end
 
     def set_hash
@@ -32,10 +36,6 @@ module HashOut
       @hashable_methods.map do |method|
         object.send :_method_value_pair, method
       end
-    end
-
-    def delete_exclusions
-      exclusions.each { |exclusion| @hash.delete exclusion }
     end
   end
 end

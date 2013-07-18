@@ -44,4 +44,10 @@ describe '#exclude_from_hash_out' do
 
     expect(surgery.hash_out).to_equal hash_out
   end
+
+  it 'mutates if call is not from #hash_out' do
+    surgery = Surgery.new
+    surgery.botox
+    expect(surgery.lips).to_equal :fat
+  end
 end

@@ -11,7 +11,7 @@ module HashOut
   protected
 
   def exclude_from_hash_out
-    _hasher.exclude last_call
+    @_excluded = true
   end
 
   private
@@ -34,5 +34,9 @@ module HashOut
 
   def _method_value_pair method
     [method, send(method)]
+  end
+
+  def _excluded? m
+    !!@_excluded
   end
 end
