@@ -8,12 +8,6 @@ module HashOut
     _hasher.object_to_hash
   end
 
-  protected
-
-  def exclude_from_hash_out
-    @_excluded = true
-  end
-
   private
 
   def _register_call hash_out_caller
@@ -36,7 +30,5 @@ module HashOut
     [method, send(method)]
   end
 
-  def _excluded? m
-    !!@_excluded
-  end
+  def exclude_from_hash_out; end;
 end
