@@ -16,15 +16,28 @@ $ gem install hash_out
 ```
 
 ## Usage
-1. `require 'hash_out'`.
-2. Include `HashOut` in your class.
-3. If desired, exclude methods from `#hash_out` by adding `exclude_from_hash_out` to them.
-4. Call `#hash_out` on the instance to return a hash of method names and their values.
+`require 'hash_out'`, `include HashOut`, and call `#hash_out` on the instance.
 
-##### `#hash_out` automatically excludes the following from the hash it returns:
-1. private methods
-2. methods that require arguments
-3. instance methods in classes that include `HashOut` that wrap or otherwise call `#hash_out`
+```ruby
+require 'hash_out'
+
+class Movie
+  include HashOut
+
+  def title
+    'Fire Walk With Me'
+  end
+
+  def director
+    'David Lynch'
+  end
+end
+
+Movie.new.hash_out
+# => {:title=>"Fire Walk With Me", :director=>'David Lynch'}
+```
+
+To exclude public methods from `#hash_out`, put `exclude_from_hash_out` at the top of it.
 
 ```ruby
 require 'hash_out'
@@ -40,30 +53,80 @@ class Movie
     exclude_from_hash_out
     'David Lynch'
   end
+end
 
-  def available_instantly? catalog=TerribleStreamingService.new
-    catalog.available_instantly? self
+Movie.new.hash_out
+# => {:title=>"Fire Walk With Me"}
+```
+
+Private methods are ignored.
+```ruby
+require 'hash_out'
+
+class Movie
+  include HashOut
+
+  def title
+    'Fire Walk With Me'
   end
 
-  def has_actor? actor
-    actors.include? actor
+  private
+
+  def director
+    'David Lynch'
+  end
+end
+
+Movie.new.hash_out
+# => {:title=>"Fire Walk With Me"}
+```
+
+Public methods that require arguments are also ignored.
+```ruby
+require 'hash_out'
+
+class Movie
+  include HashOut
+
+  def title
+    'Fire Walk With Me'
   end
 
   def chance_of_sequel? existing_sequels, strategy=FutureSequelStrategy
     strategy.new(self, existing_sequels).chance > 0.5
   end
+end
 
-  private
+Movie.new.hash_out
+# => {:title=>"Fire Walk With Me"}
+```
 
-  def actors
-    ['Sheryl Lee', 'David Bowie', 'Ray Wise']
+Public methods that call `#hash_out` are ignored, too.
+
+```ruby
+require 'hash_out'
+
+class Movie
+  include HashOut
+
+  def title
+    'Fire Walk With Me'
+  end
+
+  def director
+    'David Lynch'
+  end
+
+  def attributes
+    hash_out
   end
 end
 
 movie = Movie.new
+movie.attributes
+# => {:title=>"Fire Walk With Me", :director=>'David Lynch'}
 movie.hash_out
-# => {:title=>"Fire Walk With Me", :available_instantly?=>false}
-
+# => {:title=>"Fire Walk With Me", :director=>'David Lynch'}
 ```
 
 ## Contribute
@@ -74,8 +137,6 @@ movie.hash_out
 5. Open a pull request.
 
 ## TODO
-* Prefix iVars with _ to avoid name collision.
-* Exclude public methods suffixed with !
 * Bug: make `#hash_out` work with SimpleDelegator
 * Provide class method that offers custom delegator for `#hash_out`
 * Provide class method that offers alternative to `exclude_from_hash_out`
