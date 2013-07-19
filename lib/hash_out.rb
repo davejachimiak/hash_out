@@ -4,6 +4,8 @@ require 'hash_out/call_registry'
 require 'hash_out/object_wrapper'
 
 module HashOut
+  include LastCall
+
   def hash_out
     _register_call last_call
     _hasher.object_to_hash

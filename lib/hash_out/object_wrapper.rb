@@ -7,12 +7,12 @@ module HashOut
 
     def_delegators :object, :dup, :public_methods, :send, :method
 
-    def excludable
-      @excludable ||= dup.extend Excludable
-    end
-
     def public_methods_requiring_no_args
       public_methods(false).select { |method| requires_no_args? method }
+    end
+
+    def excludable
+      @excludable ||= dup.extend Excludable
     end
 
     def method_value_pair method
