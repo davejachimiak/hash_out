@@ -1,3 +1,8 @@
+### version 0.1.4 - *July 18, 2013*
+* Fixes bug (issue #1): `#exclude_from_hash_out` does not block mutation that may happen in the call.
+
+  closes #1
+
 ### version 0.1.3 - *July 17, 2013*
 * Fixes bug: multiple calls to `#hash_out` that are from an internal method infinitely recurse
 * Fixes bug: method not present in hash when outside caller of `#hash_out` has same name

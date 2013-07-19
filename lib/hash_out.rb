@@ -1,17 +1,12 @@
 require 'last_call'
-require 'hash_out/call_registry'
 require 'hash_out/hasher'
+require 'hash_out/call_registry'
+require 'hash_out/object_wrapper'
 
 module HashOut
   def hash_out
     _register_call last_call
     _hasher.object_to_hash
-  end
-
-  protected
-
-  def exclude_from_hash_out
-    _hasher.exclude last_call
   end
 
   private
@@ -25,14 +20,12 @@ module HashOut
   end
 
   def _hasher
-    @_hasher ||= Hasher.new self, _call_registry
+    @_hasher ||= Hasher.new _wrapped_self, _call_registry
   end
 
-  def _methods_requiring_no_args
-    public_methods(false).select { |m| [-1, 0].include? method(m).arity }
+  def _wrapped_self
+    @_wrapped_self ||= ObjectWrapper.new self
   end
 
-  def _method_value_pair method
-    [method, send(method)]
-  end
+  def exclude_from_hash_out; end;
 end
