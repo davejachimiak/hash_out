@@ -1,29 +1,28 @@
 require 'hash_out/excludable'
+require 'forwardable'
 
 module HashOut
   class ObjectWrapper < Struct.new :object
+    extend Forwardable
+
+    def_delegators :object, :dup, :public_methods, :send, :method
+
     def excludable
-      @excludable ||= duplicated_object.extend Excludable
+      @excludable ||= dup.extend Excludable
     end
 
     def public_methods_requiring_no_args
-      object.public_methods(false).select do |method|
-        requires_no_args? method
-      end
+      public_methods(false).select { |method| requires_no_args? method }
     end
 
     def method_value_pair method
-      [method, object.send(method)]
+      [method, send(method)]
     end
 
     private
 
-    def duplicated_object
-      object.dup
-    end
-
-    def requires_no_args? method
-      [-1, 0].include? object.method(method).arity
+    def requires_no_args? m
+      [-1, 0].include? method(m).arity
     end
   end
 end
