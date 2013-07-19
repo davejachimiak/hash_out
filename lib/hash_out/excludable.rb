@@ -1,13 +1,11 @@
-require 'set'
-
 module HashOut
   module Excludable
     def exclusions
-      @exclusions ||= Set.new
+      @exclusions ||= []
     end
 
     def exclude_from_hash_out
-      exclusions.add last_call
+      exclusions.push last_call
     end
 
     def prepare_exclusions methods
