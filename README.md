@@ -37,26 +37,39 @@ Movie.new.hash_out
 # => {:title=>"Fire Walk With Me", :director=>'David Lynch'}
 ```
 
-To exclude public methods from `#hash_out`, put `exclude_from_hash_out` at the top of them.
+To exclude public methods from `#hash_out`, call the `#exclude_from_hash_out` method in them.
+`#exclude_from_hash_out` blocks any attribute mutation that occurs during a normal call to the
+method.
 
 ```ruby
 require 'hash_out'
 
-class Movie
+class Post
   include HashOut
 
-  def title
-    'Fire Walk With Me'
+  attr_reader :upvotes
+
+  def initialize
+    @upvotes = 1000000
   end
 
-  def director
+  def title
+    'Twin Peaks fuckin rocks'
+  end
+
+  def upvote
     exclude_from_hash_out
-    'David Lynch'
+    @upvotes += 500000
   end
 end
 
-Movie.new.hash_out
-# => {:title=>"Fire Walk With Me"}
+post = Post.new
+post.hash_out
+# => {:title=>"Twin Peaks fuckin rocks", :upvotes=>1000000}
+
+post.upvote
+post.hash_out
+# => {:title=>"Twin Peaks fuckin rocks", :upvotes=>1500000}
 ```
 
 Private methods are ignored.
