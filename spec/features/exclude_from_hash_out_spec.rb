@@ -21,33 +21,33 @@ describe '#exclude_from_hash_out' do
     expect(brawler.hash_out).to_equal hash_out
   end
 
-  class Surgery
+  class Lips
     include HashOut
 
     def initialize
-      @lips = :small
+      @size = :small
     end
 
     def botox
       exclude_from_hash_out
-      @lips = :fat
+      @size = :fat
     end
 
-    def lips
-      @lips
+    def size
+      @size
     end
   end
 
   it 'blocks mutation effects below call' do
-    surgery  = Surgery.new
-    hash_out = { lips: :small }
+    lips     = Lips.new
+    hash_out = { size: :small }
 
-    expect(surgery.hash_out).to_equal hash_out
+    expect(lips.hash_out).to_equal hash_out
   end
 
   it 'mutates if call is not from #hash_out' do
-    surgery = Surgery.new
-    surgery.botox
-    expect(surgery.lips).to_equal :fat
+    lips = Lips.new
+    lips.botox
+    expect(lips.size).to_equal :fat
   end
 end
