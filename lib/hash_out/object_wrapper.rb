@@ -21,8 +21,8 @@ module HashOut
 
     private
 
-    def requires_no_args? m
-      [-1, 0].include? method(m).arity
+    def requires_no_args? method
+      [-1, 0].include? method(method).arity
     end
   end
 end
