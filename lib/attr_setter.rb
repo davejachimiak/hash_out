@@ -1,48 +1,33 @@
 module AttrSetter
   module ClassMethods
     def attr_accessor_set name, procedure=nil, &block
-      register_attr_accessor_set name, procedure || block
+      register_attr name, procedure || block
       attr_accessor name
     end
 
     def memoize_reader name, procedure=nil, &block
-      register_memoize_reader name, procedure || block
+      register_attr name, procedure || block
       attr_reader name
     end
 
     def new *args
       @instance = super *args
-      set_accessors
-      set_memoized_readers
+      set_ivars
       @instance
     end
 
     private
 
-    def register_attr_accessor_set name, procedure
-      attr_accessors.merge! "#{name}" => procedure
+    def register_attr name, procedure
+      attrs.merge! "#{name}" => procedure
     end
 
-    def register_memoize_reader name, procedure
-      memoized_readers.merge! "#{name}" => procedure
+    def attrs
+      @attrs ||= {}
     end
 
-    def attr_accessors
-      @attr_accessors ||= {}
-    end
-
-    def memoized_readers
-      @memoized_readers ||= {}
-    end
-
-    def set_accessors
-      attr_accessors.each_pair do |name, procedure|
-        @instance.instance_variable_set "@#{name}", value(procedure)
-      end
-    end
-
-    def set_memoized_readers
-      memoized_readers.each_pair do |name, procedure|
+    def set_ivars
+      attrs.each_pair do |name, procedure|
         @instance.instance_variable_set "@#{name}", value(procedure)
       end
     end
