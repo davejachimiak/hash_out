@@ -20,8 +20,8 @@ describe 'compatibility with delegators' do
 
   it 'is ignores methods written by Forwardable' do
     clarissa = Clarissa.new
-    hash_out = { cool: 'Cool' }
+    hash_out = { cool: 'COOL' }
 
-    # expect(clarissa.hash_out).to_equal hash_out
+    expect(clarissa.hash_out).to_equal hash_out
   end
 end
