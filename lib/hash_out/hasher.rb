@@ -20,8 +20,10 @@ module HashOut
     private
 
     def prepare_hashable_methods
-      call_registry.delete_caller_from hashable_methods
-      excludable_object.exclude_exclusions_from hashable_methods
+      methods = hashable_methods
+
+      call_registry.delete_caller_from methods
+      excludable_object.exclude_exclusions_from methods
     end
 
     def hashable_method_value_pairs
