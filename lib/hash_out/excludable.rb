@@ -5,7 +5,12 @@ module HashOut
     include LastCall
 
     def exclusions
-      @exclusions ||= self.class.delegators
+      @exclusions ||=
+        begin
+          self.class.delegators
+        rescue NoMethodError
+          []
+        end
     end
 
     def exclude_from_hash_out

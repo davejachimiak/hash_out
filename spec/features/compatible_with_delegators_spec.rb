@@ -7,14 +7,16 @@ describe 'compatibility with delegators' do
     extend Forwardable
     include HashOut
 
+    exclude_delegators_from_hash_out
+
     def_delegator  :@cool, :upcase
     def_delegator  :@guys, :downcase, :lowercase_guys
-    def_delegators :@nerd, :to_i, :to_s
+    def_delegators :@alright, :to_s
 
     def initialize
-      @cool = 'cool'
-      @guys = 'GUYS'
-      @nerd = '1'
+      @cool    = 'cool'
+      @guys    = 'GUYS'
+      @alright = :alright
     end
 
     def hey
@@ -25,14 +27,14 @@ describe 'compatibility with delegators' do
       lowercase_guys
     end
 
-    def one
-      to_i
+    def alright
+      to_s
     end
   end
 
   it 'is ignores methods written by Forwardable' do
     clarissa = Clarissa.new
-    hash_out = { hey: 'COOL', sup: 'guys', one: 1 }
+    hash_out = { hey: 'COOL', sup: 'guys', alright: 'alright' }
 
     expect(clarissa.hash_out).to_equal hash_out
   end
