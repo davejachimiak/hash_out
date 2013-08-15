@@ -5,7 +5,7 @@ require 'forwardable'
 module HashOut
   class ObjectWrapper < Struct.new :object
     include AttrSetter
-    extend Forwardable
+    extend  Forwardable
 
     def_delegators :object, :dup, :public_methods, :send, :method
     memoize_reader :excludable, ->{ dup.extend Excludable }

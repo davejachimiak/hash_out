@@ -5,7 +5,7 @@ module HashOut
     include LastCall
 
     def exclusions
-      @exclusions ||= []
+      @exclusions ||= self.class.delegators
     end
 
     def exclude_from_hash_out

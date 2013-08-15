@@ -6,6 +6,26 @@ require 'hash_out/object_wrapper'
 module HashOut
   include LastCall
 
+  module DelegatorRegistry
+    def def_instance_delegator *args
+      register_delegator *args[-1]
+      super
+    end
+    alias def_delegator def_instance_delegator
+
+    def register_delegator delegator
+      delegators.push delegator
+    end
+
+    def delegators
+      @delegators ||= []
+    end
+  end
+
+  def self.included base
+    base.extend DelegatorRegistry
+  end
+
   def hash_out
     _register_call last_call
     _hasher.object_to_hash

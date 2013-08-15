@@ -11,7 +11,7 @@ module HashOut
     end
 
     def delete_caller_from hash
-      hash.delete hash_out_caller if internal_call?
+      hash.delete hash_out_caller  if internal_call?
     end
 
     private
