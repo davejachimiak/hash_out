@@ -1,6 +1,5 @@
 require 'hash_out/excludable'
 require 'attr_setter'
-require 'forwardable'
 
 module HashOut
   class Hasher < Struct.new :object, :call_registry

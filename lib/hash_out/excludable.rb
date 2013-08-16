@@ -1,16 +1,9 @@
-require 'last_call'
-
 module HashOut
   module Excludable
     include LastCall
 
     def exclusions
-      @exclusions ||=
-        begin
-          self.class.delegators
-        rescue NoMethodError
-          []
-        end
+      @exclusions ||= []
     end
 
     def exclude_from_hash_out

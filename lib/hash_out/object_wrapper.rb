@@ -1,6 +1,5 @@
-require 'hash_out/excludable'
 require 'attr_setter'
-require 'forwardable'
+require 'hash_out/excludable'
 
 module HashOut
   class ObjectWrapper < Struct.new :object

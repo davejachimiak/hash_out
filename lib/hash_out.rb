@@ -1,40 +1,18 @@
 require 'last_call'
+require 'forwardable'
 require 'hash_out/hasher'
 require 'hash_out/call_registry'
 require 'hash_out/object_wrapper'
+require 'hash_out/object_wrapper/delegated'
+require 'hash_out/delegator_registry'
 
 module HashOut
   include LastCall
 
-  module DelegatorRegistry
-    def exclude_delegators_from_hash_out
-      @register_delegators = true
-    end
-
-    def def_instance_delegator *args
-      register_delegator *args[-1] if register_delegators?
-      super
-    end
-    alias def_delegator def_instance_delegator
-
-    def delegators
-      @delegators ||= []
-    end
-
-    private
-
-    def register_delegator delegator
-      delegators.push delegator
-    end
-
-    def register_delegators?
-      !!@register_delegators
-    end
-  end
-
   def self.included base
-    if base.respond_to? :delegate
+    if base.is_a? Forwardable
       base.extend DelegatorRegistry
+      base.send :include, Delegated
     end
   end
 
@@ -62,4 +40,10 @@ module HashOut
   end
 
   def exclude_from_hash_out; end;
+
+  module Delegated
+    def _wrapped_self
+      @_wrapped_self ||= ObjectWrapper::Delegated.new self
+    end
+  end
 end
