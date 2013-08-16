@@ -1,13 +1,11 @@
 module InitAttrs
   module ClassMethods
     def init_accessor name, procedure=nil, &block
-      register_attr name, procedure || block
-      attr_accessor name
+      register_attr_with_type :attr_accessor, name, procedure || block
     end
 
     def init_reader name, procedure=nil, &block
-      register_attr name, procedure || block
-      attr_reader name
+      register_attr_with_type :attr_reader, name, procedure || block
     end
 
     def new *args
@@ -17,6 +15,11 @@ module InitAttrs
     end
 
     private
+
+    def register_attr_with_type type, name, procedure
+      register_attr name, procedure
+      send type, name
+    end
 
     def register_attr name, procedure
       attrs.merge! "#{name}" => procedure
