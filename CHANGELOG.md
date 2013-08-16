@@ -1,3 +1,7 @@
+### version 0.2.0 - *August 15, 2013*
+* Makes hash_out compatible with Forwardable
+* Includes `#excluded_delegators_from_hash_out` class method
+
 ### version 0.1.4 - *July 18, 2013*
 * Fixes bug (issue #1): `#exclude_from_hash_out` does not block mutation that may happen in the call.
 
