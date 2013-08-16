@@ -3,8 +3,26 @@ require_relative '../spec_helper'
 describe 'compatibility with delegators' do
   require 'forwardable'
 
+  class FreshPrince
+    extend  Forwardable
+    include HashOut
+
+    def_delegator :@aww, :to_sym, :aww
+
+    def initialize
+      @aww = 'yeah'
+    end
+  end
+
+  it 'it keeps methods written by Forwardable if delegators are not excluded' do
+    fresh_prince = FreshPrince.new
+    hash_out     = { aww: :yeah }
+
+    expect(fresh_prince.hash_out).to_equal hash_out
+  end
+
   class Clarissa
-    extend Forwardable
+    extend  Forwardable
     include HashOut
 
     exclude_delegators_from_hash_out
@@ -32,7 +50,7 @@ describe 'compatibility with delegators' do
     end
   end
 
-  it 'is ignores methods written by Forwardable' do
+  it 'is ignores methods written by Forwardable if delegators are excluded' do
     clarissa = Clarissa.new
     hash_out = { hey: 'COOL', sup: 'guys', alright: 'alright' }
 
