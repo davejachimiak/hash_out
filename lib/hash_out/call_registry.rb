@@ -1,24 +1,21 @@
 module HashOut
-  class CallRegistry
-    attr_reader :hash_out_caller
+  class CallRegistry < Struct.new :hash_out_caller
+    include InitAttrs
 
-    def initialize hash_out_caller
-      @times_called    = 0
-      @hash_out_caller = hash_out_caller
-    end
+    init_accessor :times_called, ->{ 0 }
 
     def register_call
-      @times_called += 1
+      self.times_called += 1
     end
 
     def delete_caller_from hash
-      hash.delete hash_out_caller if internal_call?
+      hash.delete hash_out_caller  if internal_call?
     end
 
     private
 
     def internal_call?
-      @times_called > 1
+      times_called > 1
     end
   end
 end

@@ -1,9 +1,22 @@
 require 'last_call'
+require 'init_attrs'
+require 'forwardable'
 require 'hash_out/hasher'
 require 'hash_out/call_registry'
 require 'hash_out/object_wrapper'
+require 'hash_out/object_wrapper/delegated'
+require 'hash_out/delegator_registry'
 
 module HashOut
+  include LastCall
+
+  def self.included base
+    if base.is_a? Forwardable
+      base.extend DelegatorRegistry
+      base.send :include, Delegated
+    end
+  end
+
   def hash_out
     _register_call last_call
     _hasher.object_to_hash
@@ -28,4 +41,10 @@ module HashOut
   end
 
   def exclude_from_hash_out; end;
+
+  module Delegated
+    def _wrapped_self
+      @_wrapped_self ||= ObjectWrapper::Delegated.new self
+    end
+  end
 end

@@ -1,32 +1,31 @@
 require 'hash_out/excludable'
-require 'forwardable'
 
 module HashOut
   class Hasher < Struct.new :object, :call_registry
-    extend Forwardable
+    extend  Forwardable
+    include InitAttrs
 
-    def_delegator :object, :excludable, :excludable_obj
+    def_delegator :object, :excludable, :excludable_object
+    init_accessor :hashable_methods do
+      object.public_methods_requiring_no_args
+    end
 
     def object_to_hash
       prepare_hashable_methods
-      delete_excluded_methods
       Hash[hashable_method_value_pairs]
     end
 
     private
 
     def prepare_hashable_methods
-      @hashable_methods = object.public_methods_requiring_no_args
-      call_registry.delete_caller_from @hashable_methods
-    end
+      methods = hashable_methods
 
-    def delete_excluded_methods
-      excludable_obj.prepare_exclusions @hashable_methods
-      excludable_obj.delete_exclusions @hashable_methods
+      call_registry.delete_caller_from methods
+      excludable_object.exclude_exclusions_from methods
     end
 
     def hashable_method_value_pairs
-      @hashable_methods.map do |method|
+      hashable_methods.map do |method|
         object.method_value_pair method
       end
     end

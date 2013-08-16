@@ -7,7 +7,7 @@ Include `HashOut` to your class and convert your object to a hash with the `#has
 ## Install
 Add to your Gemfile:
 ```ruby
-gem 'hash_out', '~> 0.1'
+gem 'hash_out', '~> 0.2'
 ```
 
 Or install it from the command line:
@@ -142,18 +142,40 @@ movie.hash_out
 # => {:title=>"Fire Walk With Me", :director=>'David Lynch'}
 ```
 
+Delegators introduced by Forwardable can be excluded by including
+`#exclude_delegators_from_hash_out`. (`Forwardable` must be
+extended *before* `HashOut` is included.)
+```ruby
+require 'hash_out'
+require 'forwardable'
+
+class Movie
+  extend  Forwardable
+  include HashOut
+
+  exclude_delegators_from_hash_out
+
+  def_delegator :@title, :upcase
+
+  def initialize
+    @title = 'Fire Walk With Me'
+  end
+
+  def screaming_title
+    upcase
+  end
+end
+
+Movie.new.hash_out
+# => {:screaming_title=>"FIRE WALK WITH ME"}
+```
+
 ## Contribute
 1. Fork the repo.
 2. Create a branch.
 3. Add specs and code.
 4. Ensure the specs are green (`$ rake`)
 5. Open a pull request.
-
-## TODO
-* Bug: make `#hash_out` work with SimpleDelegator
-* Provide class method that offers custom delegator for `#hash_out`
-* Provide class method that offers alternative to `exclude_from_hash_out`
-* Provide class method that allows for inclusion of protected and private methods in resulting hash.
 
 ## License
 The MIT License (MIT)
