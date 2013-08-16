@@ -1,17 +1,17 @@
-module AttrSetter
+module InitAttrs
   module ClassMethods
-    def attr_accessor_set name, procedure=nil, &block
+    def init_accessor name, procedure=nil, &block
       register_attr name, procedure || block
       attr_accessor name
     end
 
-    def memoize_reader name, procedure=nil, &block
+    def init_reader name, procedure=nil, &block
       register_attr name, procedure || block
       attr_reader name
     end
 
     def new *args
-      @instance = super *args
+      @instance = super
       set_ivars
       @instance
     end

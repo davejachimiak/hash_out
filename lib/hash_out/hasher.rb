@@ -1,13 +1,12 @@
 require 'hash_out/excludable'
-require 'attr_setter'
 
 module HashOut
   class Hasher < Struct.new :object, :call_registry
-    extend Forwardable
-    include AttrSetter
+    extend  Forwardable
+    include InitAttrs
 
     def_delegator :object, :excludable, :excludable_object
-    attr_accessor_set :hashable_methods do
+    init_accessor :hashable_methods do
       object.public_methods_requiring_no_args
     end
 

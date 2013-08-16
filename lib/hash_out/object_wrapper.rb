@@ -1,13 +1,12 @@
-require 'attr_setter'
 require 'hash_out/excludable'
 
 module HashOut
   class ObjectWrapper < Struct.new :object
-    include AttrSetter
+    include InitAttrs
     extend  Forwardable
 
     def_delegators :object, :dup, :public_methods, :send, :method
-    memoize_reader :excludable, ->{ dup.extend Excludable }
+    init_reader :excludable, ->{ dup.extend Excludable }
 
     def public_methods_requiring_no_args
       public_methods(false).select { |method| requires_no_args? method }

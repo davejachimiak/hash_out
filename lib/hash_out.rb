@@ -1,4 +1,5 @@
 require 'last_call'
+require 'init_attrs'
 require 'forwardable'
 require 'hash_out/hasher'
 require 'hash_out/call_registry'
