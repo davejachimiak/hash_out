@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/davejachimiak/hash_out.png?branch=master)](https://travis-ci.org/davejachimiak/hash_out)
 
-Include `HashOut` to your class and convert your object to a hash with the `#hash_out` method.
+Include `HashOut` in your class and convert your object to a hash with the `#hash_out` method.
 
 ## Install
 Add to your Gemfile:
@@ -142,8 +142,8 @@ movie.hash_out
 # => {:title=>"Fire Walk With Me", :director=>'David Lynch'}
 ```
 
-Delegators introduced by Forwardable can be excluded by including
-`#exclude_delegators_from_hash_out`. (`Forwardable` must be
+Delegators introduced by Forwardable can be excluded by declaring
+`exclude_delegators_from_hash_out`. (`Forwardable` must be
 extended *before* `HashOut` is included.)
 ```ruby
 require 'hash_out'
