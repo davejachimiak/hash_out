@@ -1,42 +1,42 @@
 module InitAttrs
   module ClassMethods
     def init_accessor name, procedure=nil, &block
-      register_attr_with_type :attr_accessor, name, procedure || block
+      _register_attr_with_type :attr_accessor, name, procedure || block
     end
 
     def init_reader name, procedure=nil, &block
-      register_attr_with_type :attr_reader, name, procedure || block
+      _register_attr_with_type :attr_reader, name, procedure || block
     end
 
     def new *args
-      @instance = super
-      set_ivars
-      @instance
-    end
-
-    def register_attr_with_type type, name, procedure
-      register_attr name, procedure
-      send type, name
+      instance = super
+      _set_ivars instance
+      instance
     end
 
     private
 
-    def register_attr name, procedure
-      attrs.merge! "#{name}" => procedure
+    def _register_attr_with_type type, name, procedure
+      _register_attr name, procedure
+      send type, name
     end
 
-    def attrs
-      @attrs ||= {}
+    def _register_attr name, procedure
+      _attrs.merge! "#{name}" => procedure
     end
 
-    def set_ivars
-      attrs.each_pair do |name, procedure|
-        @instance.instance_variable_set "@#{name}", value(procedure)
+    def _attrs
+      @_attrs ||= {}
+    end
+
+    def _set_ivars instance
+      _attrs.each_pair do |name, procedure|
+        instance.instance_variable_set "@#{name}", value(instance, procedure)
       end
     end
 
-    def value procedure
-      @instance.instance_exec &procedure
+    def value instance, procedure
+      instance.instance_exec &procedure
     end
   end
 
