@@ -14,12 +14,12 @@ module InitAttrs
       instance
     end
 
-    private
-
     def _register_attr_with_type type, name, procedure
       _register_attr name, procedure
       send type, name
     end
+
+    private
 
     def _register_attr name, procedure
       _attrs.merge! "#{name}" => procedure
