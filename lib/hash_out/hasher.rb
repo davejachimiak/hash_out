@@ -18,16 +18,12 @@ module HashOut
     private
 
     def prepare_hashable_methods
-      methods = hashable_methods
-
-      call_registry.delete_caller_from methods
-      excludable_object.exclude_exclusions_from methods
+      call_registry.delete_caller_from hashable_methods
+      excludable_object.exclude_exclusions_from hashable_methods
     end
 
     def hashable_method_value_pairs
-      hashable_methods.map do |method|
-        object.method_value_pair method
-      end
+      hashable_methods.map { |method| object.method_value_pair method }
     end
   end
 end
